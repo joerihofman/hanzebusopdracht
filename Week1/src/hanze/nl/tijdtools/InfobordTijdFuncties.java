@@ -10,6 +10,7 @@ public class InfobordTijdFuncties {
     	try {
     		HTTPFuncties httpFuncties = new HTTPFuncties();
 			String result = httpFuncties.executeGet("json");
+			System.out.println("RESULT HIER  " + result);
 			Tijd tijd = new ObjectMapper().readValue(result, Tijd.class);
 	        return tijd;
     	} catch (IOException e) {

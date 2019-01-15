@@ -74,6 +74,7 @@ public class JSONBericht {
     }
 
     public String getInfoRegel() {
+        System.out.println("INFOREGEL AANGEVRAAGD");
         InfobordTijdFuncties tijdFuncties = new InfobordTijdFuncties();
         String tijd = tijdFuncties.getFormattedTimeFromCounter(aankomsttijd);
         String regel = String.format("%8s - %5s - %12s", this.lijnNaam, this.eindpunt, tijd);
