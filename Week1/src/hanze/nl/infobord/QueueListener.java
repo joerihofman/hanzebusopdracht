@@ -1,5 +1,7 @@
 package hanze.nl.infobord;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,10 +9,11 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import java.io.IOException;
 
 public class QueueListener implements MessageListener {
 
-    public QueueListener() {
+    QueueListener() {
         InfoBord.getInfoBord();
     }
 
@@ -23,11 +26,25 @@ public class QueueListener implements MessageListener {
             logger.info("richting " + message.getStringProperty("RICHTING"));
             TextMessage textMessage = (TextMessage) message;
             InfoBord infoBord = InfoBord.getInfoBord();
-            InfoBord.verwerktBericht(textMessage.getText());
+
+
+            InfoBord.verwerktBericht(makeJsonMessage(textMessage.getText()));
+
+
             infoBord.setRegels();
         } catch (JMSException e) {
             logger.error("Textmessage niet verwerkt", e);
         }
+    }
+
+    private JSONBericht makeJsonMessage(String text) {
+        JSONBericht jsonBericht = null;
+        try {
+            jsonBericht = new ObjectMapper().readValue(text, JSONBericht.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonBericht;
     }
 
 //TODO 	implementeer de messagelistener die het bericht ophaald en

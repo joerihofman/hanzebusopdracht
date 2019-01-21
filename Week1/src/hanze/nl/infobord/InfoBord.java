@@ -86,7 +86,7 @@ public class InfoBord {
         }
     }
 
-    private boolean checkRepaint(int aantalRegels, int[] aankomsttijden) {
+    private static boolean checkRepaint(int aantalRegels, int[] aankomsttijden) {
         int totaalTijden = 0;
         for (int i = 0; i < aantalRegels; i++) {
             totaalTijden += aankomsttijden[i];
@@ -109,21 +109,17 @@ public class InfoBord {
         scherm.repaint();
     }
 
-    static void verwerktBericht(String incoming){
-        try {
-            JSONBericht bericht = new ObjectMapper().readValue(incoming, JSONBericht.class);
-            String busID = bericht.getBusID();
-            Integer tijd = bericht.getTijd();
-            if (!laatsteBericht.containsKey(busID) || laatsteBericht.get(busID)<=tijd){
-                laatsteBericht.put(busID, tijd);
-                if (bericht.getAankomsttijd()==0){
-                    infoBordRegels.remove(busID);
-                } else {
-                    infoBordRegels.put(busID, bericht);
-                }
+    static void verwerktBericht(JSONBericht bericht){
+        String busID = bericht.getBusID();
+        Integer tijd = bericht.getTijd();
+
+        if (!laatsteBericht.containsKey(busID) || laatsteBericht.get(busID)<=tijd){
+            laatsteBericht.put(busID, tijd);
+            if (bericht.getAankomsttijd()==0){
+                infoBordRegels.remove(busID);
+            } else {
+                infoBordRegels.put(busID, bericht);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
