@@ -1,5 +1,7 @@
 package hanze.nl.bussimulator;
 
+import hanze.nl.bussimulator.bus.Bus;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,7 +10,7 @@ import java.util.Iterator;
 public class Runner {
 
     /**
-    * IN DB: een tabel met twee coloms, id_buslog & logrecord
+    * IN DB: een tabel met twee columns, id_buslog & logrecord
     * op anypoint: vul de naam van het schema in ipv de naam van de db
     * in foreach voor de insert in db is het application/java om een record op te bouwen voor in de db
     * odoo: publish starten; odoopublisher; dan kan je naar de url gaan met er achter ?wsdl dan krijg je de
@@ -18,49 +20,50 @@ public class Runner {
     **/
 
 
-    private static HashMap<Integer, ArrayList<Bus>> busStart = new HashMap<Integer, ArrayList<Bus>>();
-    private static ArrayList<Bus> actieveBussen = new ArrayList<Bus>();
+    private static HashMap<Integer, ArrayList<Bus>> busStart = new HashMap<>();
+    private static ArrayList<Bus> actieveBussen = new ArrayList<>();
     private static int interval = 1000;
 
     private static void addBus(int starttijd, Bus bus) {
-        ArrayList<Bus> bussen = new ArrayList<Bus>();
+        ArrayList<Bus> bussen = new ArrayList<>();
         if (busStart.containsKey(starttijd)) {
             bussen = busStart.get(starttijd);
         }
         bussen.add(bus);
         busStart.put(starttijd, bussen);
-        bus.setbusID(starttijd);
+        bus.getBusController().setbusID(starttijd);
     }
 
     private static int startBussen(int tijd) {
-        for (Bus bus : busStart.get(tijd)) {
-            actieveBussen.add(bus);
-        }
+        actieveBussen.addAll(busStart.get(tijd));
+
         busStart.remove(tijd);
+
         return (!busStart.isEmpty()) ? Collections.min(busStart.keySet()) : -1;
     }
 
-    public static void moveBussen(int nu) {
+    private static void moveBussen(int nu) {
         Iterator<Bus> itr = actieveBussen.iterator();
         while (itr.hasNext()) {
             Bus bus = itr.next();
             boolean eindpuntBereikt = bus.move();
             if (eindpuntBereikt) {
-                bus.sendLastETA(nu);
+                bus.getBusController().sendLastETA(nu, bus.getHalteNummer());
                 itr.remove();
             }
         }
     }
 
-    public static void sendETAs(int nu) {
+    private static void sendETAs(int nu) {
         Iterator<Bus> itr = actieveBussen.iterator();
+
         while (itr.hasNext()) {
             Bus bus = itr.next();
-            bus.sendETAs(nu);
+            bus.getBusController().sendETAs(nu, bus.getHalteNummer(), bus.getTotVolgendeHalte());
         }
     }
 
-    public static int initBussen() {
+    private static int initBussen() {
         Bus bus1 = new Bus(Lijnen.LIJN1, Bedrijven.ARRIVA, 1);
         Bus bus2 = new Bus(Lijnen.LIJN2, Bedrijven.ARRIVA, 1);
         Bus bus3 = new Bus(Lijnen.LIJN3, Bedrijven.ARRIVA, 1);

@@ -12,18 +12,18 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Producer {
+public class Producer {
 
     private static final Logger logger = LoggerFactory.getLogger(Producer.class);
 
     private String bericht;
     private Session session;
 
-    Producer(String bericht) {
+    public Producer(String bericht) {
         this.bericht = bericht;
     }
 
-    void verstuur() {
+    public void verstuur() {
         Connection connection;
 
         try {
