@@ -10,6 +10,29 @@ public class Bericht {
     private int tijd;
     private ArrayList<ETA> ETAs;
 
+    public String getLijnNaam() {
+        return lijnNaam;
+    }
+
+    public String getEindpunt() {
+        return eindpunt;
+    }
+
+    public String getBedrijf() {
+        return bedrijf;
+    }
+
+    public String getBusID() {
+        return busID;
+    }
+
+    public int getTijd() {
+        return tijd;
+    }
+
+    public ArrayList<ETA> getETAs() {
+        return ETAs;
+    }
     public void setLijnNaam(String lijnNaam) {
         this.lijnNaam = lijnNaam;
     }
@@ -55,27 +78,4 @@ public class Bericht {
                 '}';
     }
 
-    public String getLijnNaam() {
-        return lijnNaam;
-    }
-
-    public String getEindpunt() {
-        return eindpunt;
-    }
-
-    public String getBedrijf() {
-        return bedrijf;
-    }
-
-    public String getBusID() {
-        return busID;
-    }
-
-    public int getTijd() {
-        return tijd;
-    }
-
-    public ArrayList<ETA> getETAs() {
-        return ETAs;
-    }
 }

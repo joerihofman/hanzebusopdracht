@@ -16,7 +16,6 @@ public class Runner {
     * odoo: publish starten; odoopublisher; dan kan je naar de url gaan met er achter ?wsdl dan krijg je de
     * volledige wsdl van je soap server te zien met een verwijzing naar een xsd schema aan het begin.
     * in anypoint: webseriveconsumer wsdl url opgeven van de odoo dinges in het global elements scherm
-    *
     **/
 
 
@@ -31,7 +30,7 @@ public class Runner {
         }
         bussen.add(bus);
         busStart.put(starttijd, bussen);
-        bus.getBusController().setbusID(starttijd);
+        bus.getBusInfo().setbusID(starttijd);
     }
 
     private static int startBussen(int tijd) {

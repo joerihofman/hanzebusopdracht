@@ -17,6 +17,11 @@ public class BusInfo {
         this.busID = "Niet gestart";
     }
 
+    public void setbusID(int starttijd){
+        this.busID = starttijd+ lijn.name() + richting;
+    }
+
+
     Bedrijven getBedrijf() {
         return bedrijf;
     }

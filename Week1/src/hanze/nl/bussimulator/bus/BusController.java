@@ -24,10 +24,6 @@ public class BusController {
         this.bijHalte = halteBereikt;
     }
 
-    public void setbusID(int starttijd){
-        this.busID = starttijd+ lijn.name() + richting;
-    }
-
     public void sendETAs(int nu, int halteNummer, int totVolgendeHalte) {
         int i=0;
         Bericht bericht = new Bericht(lijn.name(), bedrijf.name(), busID, nu);
@@ -51,8 +47,10 @@ public class BusController {
         Bericht bericht = new Bericht(lijn.name(),bedrijf.name(),busID,nu);
         String eindpunt = lijn.getHalte(halteNummer).name();
         ETA eta = new ETA(eindpunt,lijn.getRichting(halteNummer),0);
+
         bericht.getETAs().add(eta);
         bericht.setEindpunt(eindpunt);
+
         sendBericht(bericht);
     }
 
