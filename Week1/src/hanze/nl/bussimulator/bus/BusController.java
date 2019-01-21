@@ -25,7 +25,7 @@ public class BusController {
     }
 
     public void sendETAs(int nu, int halteNummer, int totVolgendeHalte) {
-        int i=0;
+        int i = 0;
         Bericht bericht = new Bericht(lijn.name(), bedrijf.name(), busID, nu);
         if (bijHalte) {
             ETA eta = new ETA(lijn.getHalte(halteNummer).name(),lijn.getRichting(halteNummer),0);
@@ -34,7 +34,7 @@ public class BusController {
         Halte.Positie eerstVolgende=lijn.getHalte(halteNummer+richting).getPositie();
         int tijdNaarHalte = totVolgendeHalte+nu;
 
-        for (i = halteNummer+richting; !(i>=lijn.getLengte()) && !(i < 0); i=i+richting){
+        for (i = halteNummer + richting; (i <= lijn.getLengte()) && (i >= 0); i = i + richting){
             tijdNaarHalte+= lijn.getHalte(i).afstand(eerstVolgende);
             eerstVolgende = getEerstVolgende(i, tijdNaarHalte, bericht);
         }
@@ -44,9 +44,9 @@ public class BusController {
     }
 
     public void sendLastETA(int nu, int halteNummer){
-        Bericht bericht = new Bericht(lijn.name(),bedrijf.name(),busID,nu);
+        Bericht bericht = new Bericht(lijn.name(), bedrijf.name(), busID, nu);
         String eindpunt = lijn.getHalte(halteNummer).name();
-        ETA eta = new ETA(eindpunt,lijn.getRichting(halteNummer),0);
+        ETA eta = new ETA(eindpunt, lijn.getRichting(halteNummer), 0);
 
         bericht.getETAs().add(eta);
         bericht.setEindpunt(eindpunt);
